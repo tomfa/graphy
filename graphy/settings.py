@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # Third party apps
     'phonenumber_field',
+    'rest_framework',
 
     # Graphy apps
     'graphy.customers',
