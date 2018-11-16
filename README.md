@@ -25,6 +25,21 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+### Load test data
+```
+python manage.py loaddata db.json
+```
+
+## Run server
+```
+python manage.py runserver
+```
+You're now able to log into the admin panel at 
+[localhost:8000/admin](http://localhost:8000/admin) with 
+
+- username: admin
+- password: admin
+
 
 ## Related reading
 - [Django: Getting started with Django](https://www.djangoproject.com/start/)
