@@ -16,6 +16,16 @@ brew install pyenv
 pyenv install
 ```
 
+### Install requirements
+```
+# Create and activate virtualenv
+$(pyenv which python) -m venv .venv
+source .venv/bin/activate
+
+pip install -r requirements.txt
+```
+
+
 ## Related reading
 - [Django: Getting started with Django](https://www.djangoproject.com/start/)
 - [Django REST framework](https://www.django-rest-framework.org/)

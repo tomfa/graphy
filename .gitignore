@@ -1,0 +1,4 @@
+# Global ignores
+__pycache__/
+.venv/
+.DS_Store
