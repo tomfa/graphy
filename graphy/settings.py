@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
 
     # Graphy apps
+    'graphy.customers',
     'graphy.leads',
     'graphy.location',
 ]
