@@ -38,7 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Third party apps
+    'phonenumber_field',
+
     # Graphy apps
+    'graphy.leads',
     'graphy.location',
 ]
 
