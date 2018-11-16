@@ -1,5 +1,6 @@
 import uuid
 
+from django.contrib import admin
 from django.db import models
 from django.utils import timezone
 
@@ -29,3 +30,7 @@ class BaseModel(models.Model):
             self.created_at = now
         self.updated_at = now
         return super().save(*args, **kwargs)
+
+
+class BaseAdmin(admin.ModelAdmin):
+    readonly_fields = ('created_at', 'updated_at', 'id',)
