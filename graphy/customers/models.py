@@ -3,6 +3,7 @@ from django.db import models
 
 from phonenumber_field.modelfields import PhoneNumberField
 
+from graphy.leads.models import Lead
 from graphy.location.models import Address
 from graphy.utils.base_models import BaseModel
 
@@ -21,6 +22,7 @@ class Customer(BaseModel):
         on_delete=models.SET_NULL,
         help_text="Connected user for the customer.",
     )
+    leads = models.ManyToManyField(Lead, verbose_name='leads', blank=True, help_text='Leads this customer has created.')
     home_address = models.ForeignKey(
         Address,
         null=True,
