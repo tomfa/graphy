@@ -30,16 +30,26 @@ pip install -r requirements.txt
 python manage.py loaddata db.json
 ```
 
+This db dump includes a few instances of each model and a superuser
+with username: `admin` and password `admin` 
+
 ## Run server
 ```
 python manage.py runserver
 ```
 You're now able to log into the admin panel at 
-[localhost:8000/admin](http://localhost:8000/admin) with 
+[localhost:8000/admin](http://localhost:8000/admin), with the superuser 
+username/password from the step above. You can alternatively create a new 
+super user with 
+```
+python manage.py createsuperuser
+```
 
-- username: admin
-- password: admin
-
+## Testing
+### Run tests
+```
+pytest
+```
 
 ## Related reading
 - [Django: Getting started with Django](https://www.djangoproject.com/start/)
