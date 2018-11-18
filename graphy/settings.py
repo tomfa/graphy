@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Third party apps
+    'graphene_django',
     'phonenumber_field',
     'rest_framework',
 
@@ -59,6 +60,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'graphy.urls'
+
+# Graphene GraphQL API
+GRAPHENE = {'SCHEMA': 'graphy.schema.schema'}
 
 TEMPLATES = [
     {
