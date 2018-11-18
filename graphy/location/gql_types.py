@@ -23,6 +23,7 @@ class ZipCodeType(DjangoObjectType):
 
 
 class AddressType(DjangoObjectType):
+    # Quick fix of prevent uppercasing of enum. See test_graphql_gotchas
     country = graphene.String()
 
     class Meta:
