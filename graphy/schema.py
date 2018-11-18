@@ -13,4 +13,8 @@ class Query(
     pass
 
 
-schema = graphene.Schema(query=Query)
+class Mutation(graphene.ObjectType, lead_actions.LeadMutation):
+    pass
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation)

@@ -1,7 +1,7 @@
 from rest_framework import viewsets, permissions, mixins
 
 from graphy.leads.models import Lead
-from graphy.leads.serializers import LeadRegistrationSerializer, LeadSerializer
+from graphy.leads.serializers import LeadCreateSerializer, LeadSerializer
 
 
 class LeadAPIViewSet(
@@ -14,7 +14,7 @@ class LeadAPIViewSet(
 
     def get_serializer_class(self):
         if self.request.method == 'POST':
-            return LeadRegistrationSerializer
+            return LeadCreateSerializer
         return LeadSerializer
 
     def get_queryset(self):

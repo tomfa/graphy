@@ -20,12 +20,15 @@ class LeadSerializer(serializers.ModelSerializer):
         )
 
 
-class LeadRegistrationSerializer(serializers.Serializer):
+class LeadCreateSerializer(serializers.Serializer):
     address = serializers.CharField(min_length=8, max_length=64)
     email = serializers.EmailField(max_length=254)
     utm_campaign = serializers.CharField(required=False, max_length=64)
     utm_medium = serializers.CharField(required=False, max_length=64)
     utm_source = serializers.CharField(required=False, max_length=64)
+
+    def validate_email(self, email):
+        return email.lower()
 
     def validate_address(self, address):
         if ',' not in address:

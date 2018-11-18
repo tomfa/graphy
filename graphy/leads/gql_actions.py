@@ -1,5 +1,6 @@
 import graphene
 
+from graphy.leads.gql_mutations import LeadCreateMutation
 from graphy.leads.gql_types import LeadType
 from graphy.leads.models import Lead
 
@@ -17,3 +18,7 @@ class LeadQuery:
             email = kwargs.pop('email')
             qs = qs.filter(email__istartswith=email)
         return qs.filter(**kwargs)
+
+
+class LeadMutation:
+    create_lead = LeadCreateMutation.Field()

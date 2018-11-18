@@ -18,7 +18,7 @@ def test_leads(gql_client, lead):
         query($email: String) {
           leads(email: $email) {
             id
-            email 
+            email
           }
         }
     """
