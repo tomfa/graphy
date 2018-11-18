@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('location', '0002_add_customer_model'),
+        ('location', '0002_add_country_and_meta_class'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('leads', '0001_add_lead_model'),
     ]

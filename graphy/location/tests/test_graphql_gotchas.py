@@ -14,14 +14,14 @@ def test_enum_becomes_uppercase(gql_client, address, county):
     """
 
     address_query = """
-        query($id: String!) {
+        query($id: UUID!) {
           address(id: $id) {
             country
           }
         }
     """
     county_query = """
-        query($id: String!) {
+        query($id: UUID!) {
           county(id: $id) {
             country
           }

@@ -1,6 +1,6 @@
 def test_address(gql_client, address):
     query = """
-        query($id: String!) {
+        query($id: UUID!) {
           address(id: $id) {
             id 
           }
@@ -30,7 +30,7 @@ def test_addresses(gql_client, address):
 
 def test_county(gql_client, county):
     query = """
-        query($id: String!) {
+        query($id: UUID!) {
           county(id: $id) {
             id 
           }

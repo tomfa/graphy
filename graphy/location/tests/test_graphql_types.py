@@ -1,6 +1,6 @@
 def test_address_type(gql_client, address):
     query = """
-        query($id: String!) {
+        query($id: UUID!) {
           address(id: $id) {
             id 
             country
@@ -30,7 +30,7 @@ def test_address_type(gql_client, address):
 
 def test_county_type(gql_client, county):
     query = """
-        query($id: String!) {
+        query($id: UUID!) {
           county(id: $id) {
             id 
             name 
@@ -53,7 +53,7 @@ def test_county_type(gql_client, county):
 
 def test_municipality_type(gql_client, address):
     query = """
-        query($id: String!) {
+        query($id: UUID!) {
           address(id: $id) {
             zipCode {
               municipality {
@@ -82,7 +82,7 @@ def test_municipality_type(gql_client, address):
 
 def test_zipcode_type(gql_client, address):
     query = """
-        query($id: String!) {
+        query($id: UUID!) {
           address(id: $id) {
             zipCode {
               id 
