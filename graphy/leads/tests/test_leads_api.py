@@ -4,24 +4,24 @@ from graphy.leads.models import Lead
 from graphy.leads.serializers import LeadSerializer
 
 
-def test_empty_lead_list(client):
-    response = client.get('/leads/')
+def test_empty_lead_list(drf_client):
+    response = drf_client.get('/leads/')
 
     assert response.status_code == status.HTTP_200_OK
     assert response.data == []
 
 
-def test_lead_list(client, lead):
-    response = client.get('/leads/')
+def test_lead_list(drf_client, lead):
+    response = drf_client.get('/leads/')
 
     assert response.status_code == status.HTTP_200_OK
     assert response.data == [LeadSerializer(instance=lead).data]
 
 
-def test_lead_create(client):
+def test_lead_create(drf_client):
     assert Lead.objects.count() == 0
 
-    response = client.post(
+    response = drf_client.post(
         '/leads/',
         {'address': 'Parkveien 4b, 0350 Oslo', 'email': 'me@example.com'},
     )
