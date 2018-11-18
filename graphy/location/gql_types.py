@@ -1,3 +1,4 @@
+import graphene
 from graphene_django import DjangoObjectType
 
 from graphy.location.models import Address, County, Municipality, ZipCode
@@ -22,6 +23,8 @@ class ZipCodeType(DjangoObjectType):
 
 
 class AddressType(DjangoObjectType):
+    country = graphene.String()
+
     class Meta:
         model = Address
         only_fields = (
