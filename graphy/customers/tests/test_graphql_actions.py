@@ -1,3 +1,6 @@
+import pytest
+
+
 def auth_error(path):
     return {
         'errors': [
@@ -41,7 +44,9 @@ def test_all_customers_as_anonymous(gql_client, customer):
     assert result == auth_error('customers')
 
 
-def test_customer_as_customer(gql_client_user, customer, customer_with_user):
+def test_customer_can_get_themselves(
+    gql_client_user, customer, customer_with_user
+):
     query = """
         query($id: UUID!) {
           customer(id: $id) {
@@ -54,6 +59,63 @@ def test_customer_as_customer(gql_client_user, customer, customer_with_user):
     result = gql_client_user.execute(query, variables=params)
 
     assert result['data']['customer'] == {'id': str(customer_with_user.id)}
+
+
+@pytest.mark.xfail(
+    strict=True, reason='We have no authorization for Customer objects'
+)
+def test_customer_can_not_get_others(
+    gql_client_user, customer, customer_with_user
+):
+    query = """
+        query($id: UUID!) {
+          customer(id: $id) {
+            id
+          }
+        }
+    """
+    params = {'id': str(customer.id)}
+
+    result = gql_client_user.execute(query, variables=params)
+
+    assert result['data']['customer'] is None
+
+
+@pytest.mark.xfail(
+    strict=True, reason='We have no authorization for Customer objects'
+)
+def test_all_customers_as_customer(
+    gql_client_user, customer, customer_with_user
+):
+    query = """
+        query {
+          customers {
+            id
+            email
+          }
+        }
+    """
+
+    result = gql_client_user.execute(query)
+
+    assert result['data']['customers'] == [
+        {'id': str(customer_with_user.id), 'email': customer_with_user.email}
+    ]
+
+
+def test_customer_as_staff(gql_client_staff, customer):
+    query = """
+        query($id: UUID!) {
+          customer(id: $id) {
+            id
+          }
+        }
+    """
+    params = {'id': str(customer.id)}
+
+    result = gql_client_staff.execute(query, variables=params)
+
+    assert result['data']['customer'] == {'id': str(customer.id)}
 
 
 def test_all_customers_as_staff(gql_client_staff, customer):
