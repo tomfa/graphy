@@ -36,4 +36,10 @@ class AddressAPIViewSet(
     permission_classes = (permissions.AllowAny,)
 
     def get_queryset(self):
-        return Address.objects.select_related('zip_code')
+        if 'select_related' not in self.request.GET:
+            return Address.objects.all()
+
+        return Address.objects.select_related(
+            'zip_code__municipality__county',
+            'zip_code__county',
+        )
