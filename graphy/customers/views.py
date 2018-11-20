@@ -15,7 +15,5 @@ class CustomerViewSet(
         return CustomerSerializer
 
     def get_queryset(self):
-        if self.request.user.is_staff:
-            return Customer.objects.all()
-        return Customer.objects.filter(user=self.request.user)
+        return Customer.all_for_user(self.request.user)
 

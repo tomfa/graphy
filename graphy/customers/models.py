@@ -30,3 +30,9 @@ class Customer(BaseModel):
         on_delete=models.SET_NULL,
         help_text="The home address of the customer.",
     )
+
+    @classmethod
+    def all_for_user(cls, user):
+        if user.is_staff:
+            return Customer.objects.all()
+        return Customer.objects.filter(user=user)
