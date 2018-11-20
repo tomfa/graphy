@@ -1,10 +1,7 @@
 from graphy.leads.tests.conftest import *  # noqa
 
 
-@pytest.mark.xfail(
-    strict=True, reason='Anonymous gql client should not see customers'
-)
-def test_customer_type(gql_client, customer_with_user, lead):
+def test_customer_type(gql_client_staff, customer_with_user, lead):
     customer_with_user.leads.add(lead)
 
     query = """
@@ -27,7 +24,7 @@ def test_customer_type(gql_client, customer_with_user, lead):
     """
     params = {'id': str(customer_with_user.id)}
 
-    result = gql_client.execute(query, variables=params)
+    result = gql_client_staff.execute(query, variables=params)
 
     customer_dict = result['data']['customer']
     assert customer_dict == {
