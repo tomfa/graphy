@@ -14,11 +14,15 @@ class CustomerQuery:
 
     @auth_required
     def resolve_customer(self, info, **kwargs):
-        return Customer.objects.filter(id=kwargs.get('id')).first()
+        return (
+            Customer.all_for_user(info.context.user)
+            .filter(id=kwargs.get('id'))
+            .first()
+        )
 
     @auth_required
     def resolve_customers(self, info, **kwargs):
-        qs = Customer.objects.all()
+        qs = Customer.all_for_user(info.context.user)
         if 'email' in kwargs:
             email = kwargs.pop('email')
             qs = qs.filter(

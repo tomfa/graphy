@@ -1,6 +1,3 @@
-import pytest
-
-
 def auth_error(path):
     return {
         'errors': [
@@ -61,9 +58,6 @@ def test_customer_can_get_themselves(
     assert result['data']['customer'] == {'id': str(customer_with_user.id)}
 
 
-@pytest.mark.xfail(
-    strict=True, reason='We have no authorization for Customer objects'
-)
 def test_customer_can_not_get_others(
     gql_client_user, customer, customer_with_user
 ):
@@ -81,9 +75,6 @@ def test_customer_can_not_get_others(
     assert result['data']['customer'] is None
 
 
-@pytest.mark.xfail(
-    strict=True, reason='We have no authorization for Customer objects'
-)
 def test_all_customers_as_customer(
     gql_client_user, customer, customer_with_user
 ):
