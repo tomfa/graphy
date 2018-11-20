@@ -3,6 +3,7 @@ import graphene
 
 from graphy.customers.gql_types import CustomerType
 from graphy.customers.models import Customer
+from graphy.utils.graphql import auth_required
 
 
 class CustomerQuery:
@@ -11,9 +12,11 @@ class CustomerQuery:
         CustomerType, id=graphene.UUID(), email=graphene.String()
     )
 
+    @auth_required
     def resolve_customer(self, info, **kwargs):
         return Customer.objects.filter(id=kwargs.get('id')).first()
 
+    @auth_required
     def resolve_customers(self, info, **kwargs):
         qs = Customer.objects.all()
         if 'email' in kwargs:

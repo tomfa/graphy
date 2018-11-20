@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AnonymousUser
 
 from graphene.test import Client as GraphQLClient
 
@@ -7,6 +8,7 @@ import pytest
 from rest_framework import test
 
 from graphy.schema import schema
+from graphy.utils.graphql import AuthenticatedGraphQLView
 
 
 @pytest.fixture
@@ -54,7 +56,50 @@ def gql_client():
 
     class Context:
         def __init__(self):
+            self.user = AnonymousUser()
             self._request = Request()
             self.META = {}
 
-    return GraphQLClient(schema, context=Context())
+    return GraphQLClient(
+        schema,
+        format_error=AuthenticatedGraphQLView.format_error,
+        context=Context(),
+    )
+
+
+@pytest.fixture
+def gql_client_staff(staff_user):
+    class Request:
+        def __init__(self):
+            self.META = {}
+
+    class Context:
+        def __init__(self, user):
+            self.user = user
+            self._request = Request()
+            self.META = {}
+
+    return GraphQLClient(
+        schema,
+        format_error=AuthenticatedGraphQLView.format_error,
+        context=Context(user=staff_user),
+    )
+
+
+@pytest.fixture
+def gql_client_user(user):
+    class Request:
+        def __init__(self):
+            self.META = {}
+
+    class Context:
+        def __init__(self, user):
+            self.user = user
+            self._request = Request()
+            self.META = {}
+
+    return GraphQLClient(
+        schema,
+        format_error=AuthenticatedGraphQLView.format_error,
+        context=Context(user=user),
+    )
