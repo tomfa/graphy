@@ -1,11 +1,28 @@
 from decimal import Decimal
+import time
 
+from django.db import connection
+from django.test.utils import CaptureQueriesContext
 import pytest
 
 from rest_framework import test
 
 from graphy.location.enums import Country
 from graphy.location.models import Address, County, Municipality, ZipCode
+
+
+def queries(fun):
+    with CaptureQueriesContext(connection) as context:
+        fun()
+        return list(q['sql'] for q in context.captured_queries)
+
+
+def timing(f):
+    time1 = time.time()
+    f()
+    time2 = time.time()
+
+    return time2 - time1
 
 
 @pytest.fixture

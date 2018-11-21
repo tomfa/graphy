@@ -1,11 +1,4 @@
-from django.db import connection
-from django.test.utils import CaptureQueriesContext
-
-
-def queries(fun):
-    with CaptureQueriesContext(connection) as context:
-        fun()
-        return list(q['sql'] for q in context.captured_queries)
+from graphy.location.tests.conftest import queries
 
 
 def test_drf_without_select_related_uses_5_calls(drf_client, address):
