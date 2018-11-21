@@ -1,5 +1,5 @@
 from graphene_django.views import GraphQLView
-from graphql import GraphQLError
+from graphql import GraphQLError, GraphQLCoreBackend
 
 from rest_framework import (
     permissions,
@@ -14,6 +14,42 @@ from rest_framework.exceptions import AuthenticationFailed
 
 class GraphqlAuthenticationError(GraphQLError):
     pass
+
+
+def measure_depth(definition, level=1):
+    depth = level
+
+    selection_set = getattr(definition, 'selection_set', None)
+    if selection_set:
+        selections = getattr(definition.selection_set, 'selections', [])
+    else:
+        selections = getattr(definition, 'selections', [])
+
+    for field in selections:
+        if hasattr(field, 'selection_set'):
+            new_depth = measure_depth(field.selection_set, level=level + 1)
+            if new_depth > depth:
+                depth = new_depth
+    return depth
+
+
+class DepthAnalysisBackend(GraphQLCoreBackend):
+    MAX_DEPTH = 7
+
+    def document_from_string(self, schema, document_string):
+        document = super().document_from_string(schema, document_string)
+        ast_definitions = document.document_ast.definitions
+
+        for definition in ast_definitions:
+            # We are only interested in queries
+            if getattr(definition, 'operation', None) != 'query':
+                continue
+
+            depth = measure_depth(definition)
+            if depth > self.MAX_DEPTH:
+                raise Exception('Query is too complex')
+
+        return document
 
 
 def auth_required(fn):
@@ -45,7 +81,8 @@ class DRFAuthenticatedGraphQLView(GraphQLView):
 
     @classmethod
     def as_view(cls, *args, **kwargs):
-        view = super(GraphQLView, cls).as_view(*args, **kwargs)
+        backend = DepthAnalysisBackend()
+        view = super(GraphQLView, cls).as_view(backend=backend, *args, **kwargs)
         view = permission_classes((permissions.AllowAny,))(view)
         view = api_view(['GET', 'POST'])(view)
         return view
@@ -62,7 +99,8 @@ class AuthenticatedGraphQLView(GraphQLView):
 
     @classmethod
     def as_view(cls, *args, **kwargs):
-        view = super(GraphQLView, cls).as_view(*args, **kwargs)
+        backend = DepthAnalysisBackend()
+        view = super(GraphQLView, cls).as_view(backend=backend, *args, **kwargs)
         view = permission_classes((permissions.AllowAny,))(view)
         view = api_view(['GET', 'POST'])(view)
         return view
