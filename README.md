@@ -32,7 +32,7 @@ that avoid overfetching.
 - [3a72f29](https://github.com/tomfa/graphy/commit/3a72f295611faf829c7a9afc526d566ed906f3f9) -  `@auth_required` wrapper added, returning a HTTP 401 or error object (Two different views).
 - [ece2cf0](https://github.com/tomfa/graphy/commit/ece2cf0bd778dcdbc88ac2e60a66f88324a3ccac) - Disallowing queries over a given depth.
 
-#### Performance comparison
+### Performance comparison
 
 Details of tests can be found in
 
@@ -43,16 +43,27 @@ Details of tests can be found in
 Numbers below are an average of 500 requests done when using curl against a 
 non-debug server running postgres.
 
+**WITHOUT `select_related`**
+
 | Type                         | Avg time | Returned objects |
 | ---------------------------- | -------- | ---------------- |
 | Shallow GraphQL query        | 19.2 ms  | 1                |
-| DRF w/select related         | 24.5 ms  | 1                |
 | DRF                          | 27.9 ms  | 1                |
 | Deep GraphQL query           | 28.1 ms  | 1                |
-| Shallow GraphQL query        | 29.8 ms  | 100              | 
-| DRF w/select related         | 50.0 ms  | 100              |
+| Shallow GraphQL query        | 29.8 ms  | 100              |
 | DRF                          | 422.1 ms | 100              |
 | Deep GraphQL query           | 441.6 ms | 100              |
+
+**WITH `select_related`**
+
+| Type                         | Avg time | Returned objects |
+| ---------------------------- | -------- | ---------------- |
+| Shallow GraphQL query        | 22.8 ms  | 1                |
+| DRF                          | 24.5 ms  | 1                |
+| Deep GraphQL query           | 26.2 ms  | 1                |
+| Shallow GraphQL query        | 49.9 ms  | 100              |
+| DRF                          | 50.0 ms  | 100              |
+| Deep GraphQL query           | 75.54 ms | 100              |
 
 ## Setup
 
