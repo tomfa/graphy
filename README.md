@@ -34,6 +34,28 @@ that avoid overfetching.
 
 ### Performance comparison
 
+Since the nature of GraphQL and REST APIs are quite different, a performance 
+comparision might not map to the differences in your real life situation.
+
+While it makes perfect sense to prefetch (`select_related` with Django ORM)
+to a REST endpoint that needs the prefetched data, the same can not be said for 
+GraphQL endpoints, since a signle GraphQL Query (or "endpoint" if you talk REST) 
+can be used for different cases.
+
+For an ideal implmentation (performance wise), where a Graphene Query and a 
+DRF endpoint is implemented to serve a single, given data request, it 
+looks like DRF is performing better: 1-5% when the `select_related` is
+not used, and 10-50% when `select_related` is used. The relative difference
+seems to to be larger the more instances are returned.
+
+For real life implementations, overfetching is a problem that GraphQL
+avoids to a much larger degree than REST, and we've seen (large) 
+performance gains at [Otovo](https://github.com/otovo/) when switching from
+DRF to GraphQL. But be aware that GraphQL list queries where nested models
+are fetched can be slow when using Graphene naively. Consider adding
+own endpoints using `select_related` for such queris, or implementing 
+assistance that modifies the database query based on the GraphQL Query.
+
 Details of tests can be found in
 
 - `./graphy/location/views.py` (DRF) 
