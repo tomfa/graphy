@@ -39,10 +39,10 @@ comparision might not map to the differences in your real life situation.
 
 While it makes perfect sense to prefetch (`select_related` with Django ORM)
 to a REST endpoint that needs the prefetched data, the same can not be said for 
-GraphQL endpoints, since a signle GraphQL Query (or "endpoint" if you talk REST) 
-can be used for different cases.
+GraphQL endpoints, since a single GraphQL Query (comparable to a View in DRF,
+or an endpoint in a typical REST API) can be used for quite different cases.
 
-For an ideal implmentation (performance wise), where a Graphene Query and a 
+For an ideal implementation (performance wise), where a Graphene Query and a 
 DRF endpoint is implemented to serve a single, given data request, it 
 looks like DRF is performing better: 1-5% when the `select_related` is
 not used, and 10-50% when `select_related` is used. The relative difference
