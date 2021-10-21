@@ -2,7 +2,7 @@ aniso8601==3.0.2
 appdirs==1.4.3
 atomicwrites==1.2.1
 attrs==18.2.0
-Babel==2.6.0
+Babel==2.9.1
 black==18.9b0
 choicesenum==0.4.0
 Click==7.0
